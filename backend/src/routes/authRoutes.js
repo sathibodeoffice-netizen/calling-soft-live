@@ -11,19 +11,18 @@ router.post('/register', registerUser);
 router.get('/seed', async (req, res) => {
   try {
     const User = require('../models/User');
-    const bcrypt = require('bcryptjs');
-    const existingUser = await User.findOne({ email: 'arsathib24@gmail.com' });
-    if (existingUser) return res.json({ message: 'Admin already exists', email: 'arsathib24@gmail.com', password: '123456' });
     
-    const hashedPassword = await bcrypt.hash('123456', 10);
+    // Fix double-hashed user if it exists
+    await User.deleteOne({ email: 'arsathib24@gmail.com' });
+    
     const user = new User({
       name: 'Admin',
       email: 'arsathib24@gmail.com',
-      password: hashedPassword,
+      password: '123456', // Will be hashed automatically by pre-save hook
       role: 'admin'
     });
     await user.save();
-    res.json({ message: 'Admin user created successfully!', email: 'arsathib24@gmail.com', password: '123456' });
+    res.json({ message: 'Admin user created successfully (Fixed)!', email: 'arsathib24@gmail.com', password: '123456' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
