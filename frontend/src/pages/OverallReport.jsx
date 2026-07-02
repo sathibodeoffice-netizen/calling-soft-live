@@ -151,7 +151,6 @@ function OverallReport({ token }) {
   const dates = Object.keys(reportData).sort((a,b) => new Date(b) - new Date(a));
 
   return (
-  return (
     <div className="flex flex-col h-[90vh] p-4 bg-slate-50 relative">
       <div className="flex justify-between items-center mb-4 px-4 py-3 bg-white rounded-2xl shadow-sm border border-slate-100">
         <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-700">Overall Report</h2>

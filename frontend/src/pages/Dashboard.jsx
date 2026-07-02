@@ -578,6 +578,7 @@ function Dashboard({ token }) {
         </table>
       </div>
     </div>
+    </div>
   );
 }
 
