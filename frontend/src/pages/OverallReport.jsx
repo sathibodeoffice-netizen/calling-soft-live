@@ -146,14 +146,66 @@ function OverallReport({ token }) {
     }
   };
 
+  const [showMemberModal, setShowMemberModal] = useState(false);
+  const [newMember, setNewMember] = useState({ name: '', color: '#e2e8f0' });
+
+  const handleAddMember = async () => {
+    if (!newMember.name) return;
+    try {
+      await axios.post('/api/members', newMember, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setShowMemberModal(false);
+      setNewMember({ name: '', color: '#e2e8f0' });
+      fetchData(); // Refresh the report data and config
+    } catch (error) {
+      console.error('Failed to add member', error);
+    }
+  };
+
   if (loading) return <div className="p-8 text-center text-xl">Loading Report...</div>;
 
   const dates = Object.keys(reportData).sort((a,b) => new Date(b) - new Date(a));
 
   return (
     <div className="flex flex-col h-[90vh] p-4 bg-slate-50 relative">
+      {/* Member Modal */}
+      {showMemberModal && (
+        <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-2xl shadow-2xl flex flex-col gap-4 min-w-[300px] transform transition-all scale-100">
+            <h3 className="font-extrabold text-xl text-slate-800">Add New Member</h3>
+            <input 
+              type="text" 
+              placeholder="Name" 
+              className="border border-gray-300 p-1.5 rounded outline-none"
+              value={newMember.name}
+              onChange={(e) => setNewMember({...newMember, name: e.target.value})}
+            />
+            <div className="flex items-center gap-2">
+              <label className="text-sm text-gray-600">Color:</label>
+              <input 
+                type="color" 
+                value={newMember.color}
+                onChange={(e) => setNewMember({...newMember, color: e.target.value})}
+                className="cursor-pointer"
+              />
+            </div>
+            <div className="flex justify-end gap-3 mt-4">
+              <button className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors" onClick={() => setShowMemberModal(false)}>Cancel</button>
+              <button className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold shadow-md shadow-blue-500/20 transition-all" onClick={handleAddMember}>Add Member</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex justify-between items-center mb-4 px-4 py-3 bg-white rounded-2xl shadow-sm border border-slate-100">
         <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-700">Overall Report</h2>
+        <button 
+          onClick={() => setShowMemberModal(true)}
+          className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-2 px-4 rounded-xl shadow-md shadow-emerald-500/20 text-sm transition-all transform hover:-translate-y-0.5"
+        >
+          + Add Member
+        </button>
       </div>
 
       <div className="flex-1 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-auto">
