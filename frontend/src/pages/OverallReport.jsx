@@ -26,6 +26,7 @@ const totalCols = [
 function OverallReport({ token }) {
   const [reportData, setReportData] = useState({});
   const [loading, setLoading] = useState(true);
+  const [dynamicEmployeeConfig, setDynamicEmployeeConfig] = useState(employeeConfig);
 
   useEffect(() => {
     fetchData();
@@ -34,13 +35,25 @@ function OverallReport({ token }) {
   const fetchData = async () => {
     try {
       setLoading(true);
-      // Fetch both automated calling data and manual overrides
-      const [callingRes, manualRes] = await Promise.all([
+      // Fetch automated calling data, manual overrides, and team members
+      const [callingRes, manualRes, membersRes] = await Promise.all([
         axios.get('/api/calling', { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get('/api/report/manual', { headers: { Authorization: `Bearer ${token}` } })
+        axios.get('/api/report/manual', { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get('/api/members', { headers: { Authorization: `Bearer ${token}` } })
       ]);
       
-      processData(callingRes.data, manualRes.data);
+      const fetchedMembers = membersRes.data;
+      const defaultCols = ['Call', 'Edit', 'Review', 'OT', 'Report', 'InCall'];
+      
+      let newConfig = [...employeeConfig];
+      fetchedMembers.forEach(m => {
+        if (!newConfig.find(ec => ec.name === m.name)) {
+          newConfig.push({ name: m.name, cols: defaultCols });
+        }
+      });
+      setDynamicEmployeeConfig(newConfig);
+
+      processData(callingRes.data, manualRes.data, newConfig);
       setLoading(false);
     } catch (error) {
       console.error('Failed to fetch report data', error);
@@ -48,7 +61,7 @@ function OverallReport({ token }) {
     }
   };
 
-  const processData = (callingData, manualData) => {
+  const processData = (callingData, manualData, currentConfig) => {
     const dataMap = {}; // dataMap[dateStr][employee][col] = value
 
     // Helper to init date
@@ -57,7 +70,7 @@ function OverallReport({ token }) {
         dataMap[dStr] = {
           Total: { 'Approved': 0, 'Edit required': 0, 'Not Approved': 0, 'Edit Approved': 0, 'CR Not Approved': 0, 'All Check': 0, 'Remarks': 0 }
         };
-        employeeConfig.forEach(emp => {
+        currentConfig.forEach(emp => {
           dataMap[dStr][emp.name] = {};
           emp.cols.forEach(c => dataMap[dStr][emp.name][c] = 0);
         });
@@ -149,7 +162,7 @@ function OverallReport({ token }) {
           <thead className="sticky top-0 z-20 glass-header">
             <tr>
               <th rowSpan="2" className="border-b border-r border-slate-200 p-3 min-w-[120px] bg-slate-100 text-slate-800 text-center font-extrabold uppercase tracking-wider">Date</th>
-              {employeeConfig.map(emp => (
+              {dynamicEmployeeConfig.map(emp => (
                 <th key={emp.name} colSpan={emp.cols.length} className="border-b border-r border-slate-200 p-2 bg-indigo-50 text-indigo-800 text-center font-extrabold uppercase tracking-wider">
                   {emp.name}
                 </th>
@@ -159,7 +172,7 @@ function OverallReport({ token }) {
               </th>
             </tr>
             <tr>
-              {employeeConfig.map(emp => (
+              {dynamicEmployeeConfig.map(emp => (
                 <React.Fragment key={emp.name + '-cols'}>
                   {emp.cols.map(c => (
                     <th key={emp.name + c} className="border-b border-r border-slate-200 p-2 min-w-[80px] bg-slate-50 text-slate-600 font-bold text-center text-xs">
@@ -179,7 +192,7 @@ function OverallReport({ token }) {
             {dates.map(date => (
               <tr key={date} className="group hover:bg-slate-50 border-b border-slate-100 transition-colors">
                 <td className="border-r border-slate-100 p-3 font-extrabold whitespace-nowrap bg-slate-50 group-hover:bg-slate-100 transition-colors text-slate-700">{date}</td>
-                {employeeConfig.map(emp => (
+                {dynamicEmployeeConfig.map(emp => (
                   <React.Fragment key={date + emp.name}>
                     {emp.cols.map(c => (
                       <td key={`${date}-${emp.name}-${c}`} className="border-r border-slate-100 p-0 text-center">
@@ -223,7 +236,7 @@ function OverallReport({ token }) {
             {!loading && dates.length < 20 && Array.from({ length: 20 - dates.length }).map((_, i) => (
               <tr key={`empty-report-${i}`} className="border-b border-slate-50">
                 <td className="border-r border-slate-50 p-2 h-10 bg-slate-50/50"></td>
-                {employeeConfig.map(emp => (
+                {dynamicEmployeeConfig.map(emp => (
                   <React.Fragment key={`empty-report-${i}-${emp.name}`}>
                     {emp.cols.map(c => (
                       <td key={`empty-report-${i}-${emp.name}-${c}`} className="border-r border-slate-50 p-0 h-10"></td>
