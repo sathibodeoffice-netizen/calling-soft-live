@@ -138,22 +138,23 @@ function OverallReport({ token }) {
   const dates = Object.keys(reportData).sort((a,b) => new Date(b) - new Date(a));
 
   return (
-    <div className="flex flex-col h-[90vh]">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-gray-800">Overall Report</h2>
+  return (
+    <div className="flex flex-col h-[90vh] p-4 bg-slate-50 relative">
+      <div className="flex justify-between items-center mb-4 px-4 py-3 bg-white rounded-2xl shadow-sm border border-slate-100">
+        <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-700">Overall Report</h2>
       </div>
 
-      <div className="flex-1 bg-white shadow-sm overflow-auto">
-        <table className="min-w-max w-full table-auto text-sm border-collapse border border-gray-400">
-          <thead className="sticky top-0 bg-gray-200 shadow-sm z-10">
+      <div className="flex-1 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-auto">
+        <table className="min-w-max w-full table-auto text-sm border-collapse select-none">
+          <thead className="sticky top-0 z-20 glass-header">
             <tr>
-              <th rowSpan="2" className="border border-gray-400 p-2 min-w-[100px] bg-gray-200 text-gray-800 text-center font-bold">Date</th>
+              <th rowSpan="2" className="border-b border-r border-slate-200 p-3 min-w-[120px] bg-slate-100 text-slate-800 text-center font-extrabold uppercase tracking-wider">Date</th>
               {employeeConfig.map(emp => (
-                <th key={emp.name} colSpan={emp.cols.length} className="border border-gray-400 p-2 bg-blue-100 text-blue-800 text-center font-bold">
+                <th key={emp.name} colSpan={emp.cols.length} className="border-b border-r border-slate-200 p-2 bg-indigo-50 text-indigo-800 text-center font-extrabold uppercase tracking-wider">
                   {emp.name}
                 </th>
               ))}
-              <th colSpan={totalCols.length} className="border border-gray-400 p-2 bg-green-100 text-green-800 text-center font-bold">
+              <th colSpan={totalCols.length} className="border-b border-slate-200 p-2 bg-emerald-50 text-emerald-800 text-center font-extrabold uppercase tracking-wider">
                 Total
               </th>
             </tr>
@@ -161,14 +162,14 @@ function OverallReport({ token }) {
               {employeeConfig.map(emp => (
                 <React.Fragment key={emp.name + '-cols'}>
                   {emp.cols.map(c => (
-                    <th key={emp.name + c} className="border border-gray-300 p-2 min-w-[80px] bg-gray-100 text-gray-700 font-semibold text-center text-xs">
+                    <th key={emp.name + c} className="border-b border-r border-slate-200 p-2 min-w-[80px] bg-slate-50 text-slate-600 font-bold text-center text-xs">
                       {c}
                     </th>
                   ))}
                 </React.Fragment>
               ))}
               {totalCols.map(c => (
-                <th key={'Total-' + c} className="border border-gray-300 p-2 min-w-[80px] bg-purple-100 text-purple-800 font-bold text-center text-xs">
+                <th key={'Total-' + c} className="border-b border-r border-slate-200 p-2 min-w-[90px] bg-fuchsia-50 text-fuchsia-800 font-bold text-center text-xs">
                   {c}
                 </th>
               ))}
@@ -176,15 +177,15 @@ function OverallReport({ token }) {
           </thead>
           <tbody>
             {dates.map(date => (
-              <tr key={date} className="hover:bg-gray-50 border-b border-gray-300">
-                <td className="border border-gray-400 p-2 font-bold whitespace-nowrap bg-gray-50">{date}</td>
+              <tr key={date} className="group hover:bg-slate-50 border-b border-slate-100 transition-colors">
+                <td className="border-r border-slate-100 p-3 font-extrabold whitespace-nowrap bg-slate-50 group-hover:bg-slate-100 transition-colors text-slate-700">{date}</td>
                 {employeeConfig.map(emp => (
                   <React.Fragment key={date + emp.name}>
                     {emp.cols.map(c => (
-                      <td key={`${date}-${emp.name}-${c}`} className="border border-gray-300 p-0 text-center">
+                      <td key={`${date}-${emp.name}-${c}`} className="border-r border-slate-100 p-0 text-center">
                         <input 
                           type="text" 
-                          className="w-full h-full p-2 outline-none text-center bg-transparent focus:bg-white focus:ring-1 focus:ring-blue-400"
+                          className="w-full h-full p-2 outline-none text-center bg-transparent focus:bg-white focus:ring-2 focus:ring-indigo-400 font-semibold text-slate-600"
                           value={reportData[date][emp.name]?.[c] || ''} 
                           onChange={(e) => {
                             const val = e.target.value;
@@ -200,10 +201,10 @@ function OverallReport({ token }) {
                   </React.Fragment>
                 ))}
                 {totalCols.map(c => (
-                  <td key={`${date}-Total-${c}`} className="border border-gray-300 p-0 text-center bg-purple-50">
+                  <td key={`${date}-Total-${c}`} className="border-r border-slate-100 p-0 text-center bg-fuchsia-50/30">
                     <input 
                       type="text" 
-                      className="w-full h-full p-2 outline-none text-center font-semibold text-purple-800 bg-transparent focus:bg-white focus:ring-1 focus:ring-blue-400"
+                      className="w-full h-full p-2 outline-none text-center font-bold text-fuchsia-700 bg-transparent focus:bg-white focus:ring-2 focus:ring-fuchsia-400"
                       value={reportData[date]['Total']?.[c] || ''} 
                       onChange={(e) => {
                         const val = e.target.value;
@@ -220,17 +221,17 @@ function OverallReport({ token }) {
             ))}
             {/* Render empty rows to simulate a full spreadsheet grid */}
             {!loading && dates.length < 20 && Array.from({ length: 20 - dates.length }).map((_, i) => (
-              <tr key={`empty-report-${i}`} className="border-b border-gray-300">
-                <td className="border border-gray-400 p-2 h-10 bg-gray-50"></td>
+              <tr key={`empty-report-${i}`} className="border-b border-slate-50">
+                <td className="border-r border-slate-50 p-2 h-10 bg-slate-50/50"></td>
                 {employeeConfig.map(emp => (
                   <React.Fragment key={`empty-report-${i}-${emp.name}`}>
                     {emp.cols.map(c => (
-                      <td key={`empty-report-${i}-${emp.name}-${c}`} className="border border-gray-300 p-0 h-10"></td>
+                      <td key={`empty-report-${i}-${emp.name}-${c}`} className="border-r border-slate-50 p-0 h-10"></td>
                     ))}
                   </React.Fragment>
                 ))}
                 {totalCols.map(c => (
-                  <td key={`empty-report-${i}-Total-${c}`} className="border border-gray-300 p-0 h-10 bg-purple-50"></td>
+                  <td key={`empty-report-${i}-Total-${c}`} className="border-r border-slate-50 p-0 h-10 bg-fuchsia-50/20"></td>
                 ))}
               </tr>
             ))}

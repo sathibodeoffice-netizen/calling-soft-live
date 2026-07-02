@@ -273,12 +273,12 @@ function Dashboard({ token }) {
   };
 
   return (
-    <div className="flex flex-col h-[95vh] bg-gray-50 relative">
+    <div className="flex flex-col h-[95vh] p-4 bg-slate-50 relative">
       {/* Member Modal */}
       {showMemberModal && (
-        <div className="absolute inset-0 bg-black/30 z-50 flex justify-center items-center">
-          <div className="bg-white p-4 rounded shadow-lg flex flex-col gap-3 min-w-[250px]">
-            <h3 className="font-bold text-gray-700">Add New Member</h3>
+        <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-2xl shadow-2xl flex flex-col gap-4 min-w-[300px] transform transition-all scale-100">
+            <h3 className="font-extrabold text-xl text-slate-800">Add New Member</h3>
             <input 
               type="text" 
               placeholder="Name" 
@@ -295,160 +295,162 @@ function Dashboard({ token }) {
                 className="cursor-pointer"
               />
             </div>
-            <div className="flex justify-end gap-2 mt-2">
-              <button className="px-3 py-1 bg-gray-300 rounded" onClick={() => setShowMemberModal(false)}>Cancel</button>
-              <button className="px-3 py-1 bg-blue-600 text-white rounded font-bold" onClick={handleAddMember}>Add</button>
+            <div className="flex justify-end gap-3 mt-4">
+              <button className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors" onClick={() => setShowMemberModal(false)}>Cancel</button>
+              <button className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold shadow-md shadow-blue-500/20 transition-all" onClick={handleAddMember}>Add Member</button>
             </div>
           </div>
         </div>
       )}
-      <div className="flex justify-between items-center mb-2 px-2 pt-2">
-        <h2 className="text-xl font-bold text-gray-800">Calling Sheet</h2>
-        <div className="flex gap-2 items-center">
-          <label className="text-sm font-semibold text-gray-600">Sheet:</label>
+      <div className="flex justify-between items-center mb-4 px-4 py-3 bg-white rounded-2xl shadow-sm border border-slate-100">
+        <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-700">Calling Sheet</h2>
+        <div className="flex gap-3 items-center">
+          <label className="text-sm font-bold text-slate-600 uppercase tracking-wider">Sheet:</label>
           <select 
             value={sheetDate}
             onChange={(e) => setSheetDate(e.target.value)}
-            className="border border-gray-300 p-1 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm min-w-[100px]"
+            className="border-2 border-slate-200 p-2 rounded-xl focus:outline-none focus:border-indigo-500 text-sm font-semibold min-w-[120px] bg-slate-50 cursor-pointer transition-all"
           >
             {availableSheets.map(date => (
               <option key={date} value={date}>{date}</option>
             ))}
           </select>
           {showNewPageInput ? (
-            <div className="flex items-center gap-1 bg-white border border-gray-300 rounded p-1 ml-1">
+            <div className="flex items-center gap-2 bg-slate-50 border-2 border-indigo-200 rounded-xl p-1 ml-1 transition-all">
               <input 
                 type="text" placeholder="e.g. 15 Feb 26" value={newPageDate}
                 onChange={(e) => setNewPageDate(e.target.value)}
-                className="p-1 outline-none w-[90px] text-xs"
+                className="p-1 pl-2 outline-none w-[100px] text-sm bg-transparent font-semibold"
               />
-              <button onClick={handleAddNewPage} className="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">OK</button>
-              <button onClick={() => setShowNewPageInput(false)} className="bg-gray-400 text-white px-2 py-1 rounded text-xs">X</button>
+              <button onClick={handleAddNewPage} className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-sm font-bold shadow-md transition-colors">OK</button>
+              <button onClick={() => setShowNewPageInput(false)} className="bg-slate-300 hover:bg-slate-400 text-slate-700 px-3 py-1.5 rounded-lg text-sm font-bold transition-colors">X</button>
             </div>
           ) : (
             <button 
               onClick={() => setShowNewPageInput(true)}
-              className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-1 px-2 rounded shadow text-sm ml-1"
+              className="bg-slate-100 hover:bg-slate-200 text-indigo-700 font-bold py-2 px-4 rounded-xl shadow-sm border border-slate-200 text-sm ml-1 transition-all flex items-center gap-1"
             >
               + Add Page
             </button>
           )}
+          <div className="w-px h-8 bg-slate-200 mx-1"></div>
           <button 
             onClick={handleAddRow}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded shadow text-sm ml-1"
+            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-2 px-4 rounded-xl shadow-md shadow-blue-500/20 text-sm ml-1 transition-all transform hover:-translate-y-0.5"
           >
             + Add Row
           </button>
           <button 
             onClick={() => setShowMemberModal(true)}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-1 px-3 rounded shadow text-sm ml-1"
+            className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-2 px-4 rounded-xl shadow-md shadow-emerald-500/20 text-sm ml-1 transition-all transform hover:-translate-y-0.5"
           >
             + Add Member
           </button>
         </div>
       </div>
 
-      {/* Google Sheets Toolbar */}
-      <div className="flex flex-col border-y border-gray-300 bg-[#f8f9fa]">
-        <div className="flex items-center gap-2 px-4 py-1.5 overflow-x-auto">
-          <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Search size={16} /></button>
-          <div className="w-px h-5 bg-gray-300 mx-1"></div>
-          <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Undo size={16} /></button>
-          <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Redo size={16} /></button>
-          <button className="p-1 hover:bg-gray-200 rounded text-gray-600" onClick={() => window.print()}><Printer size={16} /></button>
-          <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><PaintRoller size={16} /></button>
-          <div className="w-px h-5 bg-gray-300 mx-1"></div>
-          <button className="p-1 hover:bg-gray-200 rounded text-gray-600 flex items-center gap-1 text-sm">100%</button>
-          <div className="w-px h-5 bg-gray-300 mx-1"></div>
-          <button className="p-1 hover:bg-gray-200 rounded text-gray-600 flex items-center gap-1 text-sm font-sans">Arial</button>
-          <div className="w-px h-5 bg-gray-300 mx-1"></div>
-          <button className="p-1 hover:bg-gray-200 rounded text-gray-600 flex items-center gap-1 text-sm">10</button>
-          <div className="w-px h-5 bg-gray-300 mx-1"></div>
-          
-          {/* Working Formatting Tools */}
-          <button 
-            className={`p-1 hover:bg-gray-200 rounded ${activeCell.rowIndex !== null && data[activeCell.rowIndex]?.styles?.[activeCell.field]?.bold ? 'bg-blue-100 text-blue-700' : 'text-gray-700'}`} 
-            onClick={() => handleFormat('bold')} title="Bold">
-            <Bold size={16} />
-          </button>
-          <button 
-            className={`p-1 hover:bg-gray-200 rounded ${activeCell.rowIndex !== null && data[activeCell.rowIndex]?.styles?.[activeCell.field]?.italic ? 'bg-blue-100 text-blue-700' : 'text-gray-700'}`} 
-            onClick={() => handleFormat('italic')} title="Italic">
-            <Italic size={16} />
-          </button>
-          <button 
-            className={`p-1 hover:bg-gray-200 rounded ${activeCell.rowIndex !== null && data[activeCell.rowIndex]?.styles?.[activeCell.field]?.strikethrough ? 'bg-blue-100 text-blue-700' : 'text-gray-700'}`} 
-            onClick={() => handleFormat('strikethrough')} title="Strikethrough">
-            <Strikethrough size={16} />
-          </button>
-          <div className="relative group flex items-center">
-             <button className="p-1 hover:bg-gray-200 rounded text-gray-700" title="Text Color"><Baseline size={16} /></button>
-             <input type="color" className="absolute opacity-0 w-full h-full cursor-pointer" onChange={(e) => handleFormat('color', e.target.value)} />
+      <div className="flex-1 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col relative">
+        {/* Google Sheets Toolbar */}
+        <div className="flex flex-col border-b border-slate-200 bg-slate-50/80 backdrop-blur-md">
+          <div className="flex items-center gap-2 px-4 py-2 overflow-x-auto">
+            <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-600 transition-all"><Search size={18} /></button>
+            <div className="w-px h-6 bg-slate-300 mx-1"></div>
+            <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-600 transition-all"><Undo size={18} /></button>
+            <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-600 transition-all"><Redo size={18} /></button>
+            <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-600 transition-all" onClick={() => window.print()}><Printer size={18} /></button>
+            <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-600 transition-all"><PaintRoller size={18} /></button>
+            <div className="w-px h-6 bg-slate-300 mx-1"></div>
+            <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-600 flex items-center gap-1 text-sm font-semibold transition-all">100%</button>
+            <div className="w-px h-6 bg-slate-300 mx-1"></div>
+            <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-600 flex items-center gap-1 text-sm font-sans font-semibold transition-all">Inter</button>
+            <div className="w-px h-6 bg-slate-300 mx-1"></div>
+            <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-600 flex items-center gap-1 text-sm font-semibold transition-all">10</button>
+            <div className="w-px h-6 bg-slate-300 mx-1"></div>
+            
+            {/* Working Formatting Tools */}
+            <button 
+              className={`p-1.5 hover:bg-white hover:shadow-sm rounded-lg transition-all ${activeCell.rowIndex !== null && data[activeCell.rowIndex]?.styles?.[activeCell.field]?.bold ? 'bg-indigo-100 text-indigo-700 shadow-inner' : 'text-slate-700'}`} 
+              onClick={() => handleFormat('bold')} title="Bold">
+              <Bold size={18} />
+            </button>
+            <button 
+              className={`p-1.5 hover:bg-white hover:shadow-sm rounded-lg transition-all ${activeCell.rowIndex !== null && data[activeCell.rowIndex]?.styles?.[activeCell.field]?.italic ? 'bg-indigo-100 text-indigo-700 shadow-inner' : 'text-slate-700'}`} 
+              onClick={() => handleFormat('italic')} title="Italic">
+              <Italic size={18} />
+            </button>
+            <button 
+              className={`p-1.5 hover:bg-white hover:shadow-sm rounded-lg transition-all ${activeCell.rowIndex !== null && data[activeCell.rowIndex]?.styles?.[activeCell.field]?.strikethrough ? 'bg-indigo-100 text-indigo-700 shadow-inner' : 'text-slate-700'}`} 
+              onClick={() => handleFormat('strikethrough')} title="Strikethrough">
+              <Strikethrough size={18} />
+            </button>
+            <div className="relative group flex items-center">
+               <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-700 transition-all" title="Text Color"><Baseline size={18} /></button>
+               <input type="color" className="absolute opacity-0 w-full h-full cursor-pointer" onChange={(e) => handleFormat('color', e.target.value)} />
+            </div>
+            <div className="relative group flex items-center">
+               <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-700 transition-all" title="Fill Color"><PaintBucket size={18} /></button>
+               <input type="color" className="absolute opacity-0 w-full h-full cursor-pointer" onChange={(e) => handleFormat('backgroundColor', e.target.value)} />
+            </div>
+            
+            <div className="w-px h-6 bg-slate-300 mx-1"></div>
+            <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-600 transition-all"><Grid size={18} /></button>
+            <div className="w-px h-6 bg-slate-300 mx-1"></div>
+            <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-600 transition-all" onClick={() => handleFormat('align', 'left')}><AlignLeft size={18} /></button>
+            <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-600 transition-all" onClick={() => handleFormat('align', 'center')}><AlignCenter size={18} /></button>
+            <button className="p-1.5 hover:bg-white hover:shadow-sm rounded-lg text-slate-600 transition-all" onClick={() => handleFormat('align', 'right')}><AlignRight size={18} /></button>
           </div>
-          <div className="relative group flex items-center">
-             <button className="p-1 hover:bg-gray-200 rounded text-gray-700" title="Fill Color"><PaintBucket size={16} /></button>
-             <input type="color" className="absolute opacity-0 w-full h-full cursor-pointer" onChange={(e) => handleFormat('backgroundColor', e.target.value)} />
+
+          {/* Formula Bar */}
+          <div className="flex items-center gap-3 px-4 py-2 bg-white border-t border-slate-200 text-sm shadow-inner">
+            <div className="text-slate-400 italic font-serif font-bold pr-3 border-r border-slate-200 select-none">fx</div>
+            <input 
+              type="text" 
+              className="flex-1 outline-none font-mono text-sm bg-transparent text-slate-700 placeholder-slate-400" 
+              value={activeCellValue}
+              onChange={handleFormulaBarChange}
+              onBlur={handleFormulaBarBlur}
+              placeholder={activeCell.rowIndex !== null ? `Editing row ${activeCell.rowIndex + 1}, column ${activeCell.field}` : 'Select a cell to edit...'}
+            />
           </div>
-          
-          <div className="w-px h-5 bg-gray-300 mx-1"></div>
-          <button className="p-1 hover:bg-gray-200 rounded text-gray-600"><Grid size={16} /></button>
-          <div className="w-px h-5 bg-gray-300 mx-1"></div>
-          <button className="p-1 hover:bg-gray-200 rounded text-gray-600" onClick={() => handleFormat('align', 'left')}><AlignLeft size={16} /></button>
-          <button className="p-1 hover:bg-gray-200 rounded text-gray-600" onClick={() => handleFormat('align', 'center')}><AlignCenter size={16} /></button>
-          <button className="p-1 hover:bg-gray-200 rounded text-gray-600" onClick={() => handleFormat('align', 'right')}><AlignRight size={16} /></button>
         </div>
 
-        {/* Formula Bar */}
-        <div className="flex items-center gap-2 px-3 py-1 bg-white border-t border-gray-300 shadow-sm text-sm">
-          <div className="text-gray-500 italic font-serif font-bold px-2 border-r border-gray-300">fx</div>
-          <input 
-            type="text" 
-            className="flex-1 outline-none px-2 font-mono text-sm" 
-            value={activeCellValue}
-            onChange={handleFormulaBarChange}
-            onBlur={handleFormulaBarBlur}
-            placeholder={activeCell.rowIndex !== null ? `Editing row ${activeCell.rowIndex + 1}, column ${activeCell.field}` : ''}
-          />
-        </div>
-      </div>
-
-      {/* Spreadsheet Body */}
-      <div className="flex-1 bg-white shadow-sm overflow-auto">
-        <table className="min-w-max w-full table-auto text-sm border-collapse border border-gray-300 select-none">
-          <thead className="sticky top-0 bg-gray-100 shadow-sm z-10 select-none">
-            <tr>
-              <th className="border border-gray-300 p-2 min-w-[50px] bg-gray-200 text-gray-600"></th>
-              <th className="border border-gray-300 p-2 min-w-[150px] font-semibold text-gray-700">E-mail</th>
-              <th className="border border-gray-300 p-2 min-w-[150px] font-semibold text-gray-700">Name</th>
-              <th className="border border-gray-300 p-2 min-w-[150px] font-semibold text-gray-700">Mobile no</th>
-              <th className="border border-gray-300 p-2 min-w-[100px] font-semibold text-gray-700">Relation</th>
-              <th className="border border-gray-300 p-2 min-w-[100px] font-semibold text-gray-700">Error Code</th>
-              <th className="border border-gray-300 p-2 min-w-[200px] font-semibold text-gray-700">Remarks</th>
-              <th className="border border-gray-300 p-2 min-w-[150px] font-semibold text-gray-700">Status</th>
-              <th className="border border-gray-300 p-2 min-w-[120px] font-semibold text-gray-700">Review</th>
-              <th className="border border-gray-300 p-2 min-w-[120px] font-semibold text-gray-700">Edit</th>
-              <th className="border border-gray-300 p-2 min-w-[120px] font-semibold text-gray-700">Call</th>
-              <th className="border border-gray-300 p-2 min-w-[120px] font-semibold text-gray-700">Calling OT</th>
-              <th className="border border-gray-300 p-2 min-w-[120px] font-semibold text-gray-700">Edit OT</th>
-              <th className="border border-gray-300 p-2 min-w-[120px] font-semibold text-gray-700">Review OT</th>
-              <th className="border border-gray-300 p-2 min-w-[200px] font-semibold text-gray-700">কলিং থেকে মন্তব্য</th>
-              <th className="border border-gray-300 p-2 min-w-[200px] font-semibold text-gray-700">রিভিউ থেকে মন্তব্য</th>
-              <th className="border border-gray-300 p-2 min-w-[150px] font-semibold text-gray-700">Review Time</th>
-              <th className="border border-gray-300 p-2 min-w-[150px] font-semibold text-gray-700">Edit Time</th>
-              <th className="border border-gray-300 p-2 min-w-[150px] font-semibold text-gray-700">Call Time</th>
-            </tr>
-          </thead>
+        {/* Spreadsheet Body */}
+        <div className="flex-1 bg-white overflow-auto">
+          <table className="min-w-max w-full table-auto text-sm border-collapse select-none">
+            <thead className="sticky top-0 z-20 glass-header">
+              <tr>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[50px] text-slate-400 font-bold">#</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[150px] font-bold text-slate-700">E-mail</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[150px] font-bold text-slate-700">Name</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[150px] font-bold text-slate-700">Mobile no</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[120px] font-bold text-slate-700">Relation</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[100px] font-bold text-slate-700">Error Code</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[200px] font-bold text-slate-700">Remarks</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[150px] font-bold text-slate-700">Status</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[120px] font-bold text-slate-700">Review</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[120px] font-bold text-slate-700">Edit</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[120px] font-bold text-slate-700">Call</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[120px] font-bold text-slate-700">Calling OT</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[120px] font-bold text-slate-700">Edit OT</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[120px] font-bold text-slate-700">Review OT</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[200px] font-bold text-slate-700">কলিং থেকে মন্তব্য</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[200px] font-bold text-slate-700">রিভিউ থেকে মন্তব্য</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[150px] font-bold text-slate-700">Review Time</th>
+                <th className="border-b border-r border-slate-200 p-3 min-w-[150px] font-bold text-slate-700">Edit Time</th>
+                <th className="border-b border-slate-200 p-3 min-w-[150px] font-bold text-slate-700">Call Time</th>
+              </tr>
+            </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan="19" className="p-4 text-center border border-gray-300">Loading...</td></tr>
+              <tr><td colSpan="19" className="p-8 text-center text-slate-500 font-medium">Loading data...</td></tr>
             ) : data.length === 0 ? (
-              <tr><td colSpan="19" className="p-10 text-center text-gray-500 border border-gray-300 bg-gray-50 text-lg">No data for this date. Click "+ Add Row" to begin.</td></tr>
+              <tr><td colSpan="19" className="p-16 text-center text-slate-400 text-lg bg-slate-50/50">No data for this date. Click <span className="font-bold text-indigo-500">"+ Add Row"</span> to begin.</td></tr>
             ) : (
               data.map((row, index) => (
-                <tr key={row._id || index} className="hover:bg-blue-50 border-b border-gray-200">
-                  <td className="border border-gray-300 p-0 text-center bg-gray-100 text-gray-600 font-semibold select-none w-[50px]">{index + 1}</td>
+                <tr key={row._id || index} className="group border-b border-slate-100 bg-white hover:bg-slate-50 transition-colors">
+                  <td className="border-r border-slate-100 p-0 text-center bg-slate-50/80 text-slate-400 font-semibold select-none w-[50px] group-hover:bg-slate-100 transition-colors">{index + 1}</td>
                   {['email', 'name', 'mobileNo', 'relation'].map(field => (
-                    <td key={field} className={`border border-gray-300 p-0 ${activeCell.rowIndex === index && activeCell.field === field ? 'ring-2 ring-blue-500 z-10 relative' : ''}`}>
+                    <td key={field} className={`border-r border-slate-100 p-0 ${activeCell.rowIndex === index && activeCell.field === field ? 'ring-2 ring-indigo-500 z-10 relative bg-white shadow-sm' : ''}`}>
                       <input type="text" 
                         id={`cell-${index}-${field}`}
                         className="w-full h-full p-1.5 outline-none bg-transparent"
@@ -462,7 +464,7 @@ function Dashboard({ token }) {
                     </td>
                   ))}
                   
-                  <td className={`border border-gray-300 p-0 relative ${activeCell.rowIndex === index && activeCell.field === 'errorCode' ? 'ring-2 ring-blue-500 z-10 relative' : ''}`}>
+                  <td className={`border-r border-slate-100 p-0 relative ${activeCell.rowIndex === index && activeCell.field === 'errorCode' ? 'ring-2 ring-indigo-500 z-10 relative bg-white shadow-sm' : ''}`}>
                     <select 
                       id={`cell-${index}-errorCode`}
                       className="w-full h-full p-1.5 outline-none cursor-pointer bg-transparent"
@@ -486,7 +488,7 @@ function Dashboard({ token }) {
                     </select>
                   </td>
 
-                  <td className={`border border-gray-300 p-0 ${activeCell.rowIndex === index && activeCell.field === 'remarks' ? 'ring-2 ring-blue-500 z-10 relative' : ''}`}>
+                  <td className={`border-r border-slate-100 p-0 ${activeCell.rowIndex === index && activeCell.field === 'remarks' ? 'ring-2 ring-indigo-500 z-10 relative bg-white shadow-sm' : ''}`}>
                     <input type="text" 
                       id={`cell-${index}-remarks`}
                       className="w-full h-full p-1.5 outline-none bg-transparent"
@@ -498,7 +500,7 @@ function Dashboard({ token }) {
                       onKeyDown={(e) => handleKeyDown(e, index, 'remarks')}
                     />
                   </td>
-                  <td className={`border border-gray-300 p-0 relative ${activeCell.rowIndex === index && activeCell.field === 'status' ? 'ring-2 ring-blue-500 z-10 relative' : ''}`}>
+                  <td className={`border-r border-slate-100 p-0 relative ${activeCell.rowIndex === index && activeCell.field === 'status' ? 'ring-2 ring-indigo-500 z-10 relative bg-white shadow-sm' : ''}`}>
                     <select 
                       id={`cell-${index}-status`}
                       className={`w-full h-full p-1.5 outline-none cursor-pointer ${getStatusColor(row.status)}`}
@@ -525,7 +527,7 @@ function Dashboard({ token }) {
                     </select>
                   </td>
                   {['review', 'edit', 'call'].map(field => (
-                    <td key={field} className={`border border-gray-300 p-0 relative ${activeCell.rowIndex === index && activeCell.field === field ? 'ring-2 ring-blue-500 z-10 relative' : ''}`}>
+                    <td key={field} className={`border-r border-slate-100 p-0 relative ${activeCell.rowIndex === index && activeCell.field === field ? 'ring-2 ring-indigo-500 z-10 relative bg-white shadow-sm' : ''}`}>
                       <select 
                         id={`cell-${index}-${field}`}
                         className="w-full h-full p-1.5 outline-none cursor-pointer"
@@ -548,7 +550,7 @@ function Dashboard({ token }) {
                     </td>
                   ))}
                   {['callingOT', 'editOT', 'reviewOT', 'remarksFromCalling', 'remarksFromReview', 'reviewTime', 'editTime', 'callTime'].map(field => (
-                    <td key={field} className={`border border-gray-300 p-0 ${activeCell.rowIndex === index && activeCell.field === field ? 'ring-2 ring-blue-500 z-10 relative' : ''}`}>
+                    <td key={field} className={`border-r border-slate-100 p-0 ${activeCell.rowIndex === index && activeCell.field === field ? 'ring-2 ring-indigo-500 z-10 relative bg-white shadow-sm' : ''}`}>
                       <input type="text" 
                         id={`cell-${index}-${field}`}
                         className="w-full h-full p-1.5 outline-none bg-transparent"
@@ -565,10 +567,10 @@ function Dashboard({ token }) {
               ))
             )}
             {!loading && data.length < 100 && Array.from({ length: 100 - data.length }).map((_, i) => (
-              <tr key={`empty-${i}`} className="border-b border-gray-200">
-                <td className="border border-gray-300 p-0 text-center bg-gray-50 text-gray-400 font-semibold select-none w-[50px]">{data.length + i + 1}</td>
+              <tr key={`empty-${i}`} className="border-b border-slate-50">
+                <td className="border-r border-slate-50 p-0 text-center bg-slate-50/30 text-slate-300 font-semibold select-none w-[50px]">{data.length + i + 1}</td>
                 {Array.from({ length: 18 }).map((_, colIndex) => (
-                  <td key={`empty-${i}-${colIndex}`} className="border border-gray-300 p-2 h-8 bg-gray-50/30"></td>
+                  <td key={`empty-${i}-${colIndex}`} className="border-r border-slate-50 p-2 h-[34px] bg-transparent"></td>
                 ))}
               </tr>
             ))}
