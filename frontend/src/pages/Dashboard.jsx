@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { 
   Search, Undo, Redo, Printer, PaintRoller, 
   Bold, Italic, Strikethrough, Baseline, PaintBucket, 
@@ -305,6 +306,9 @@ function Dashboard({ token }) {
       <div className="flex justify-between items-center mb-4 px-4 py-3 bg-white rounded-2xl shadow-sm border border-slate-100">
         <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-700">Calling Sheet</h2>
         <div className="flex gap-3 items-center">
+          <Link to="/report" className="bg-slate-100 hover:bg-slate-200 text-indigo-700 font-bold py-2 px-4 rounded-xl shadow-sm border border-slate-200 text-sm transition-all mr-2">
+            Overall Report →
+          </Link>
           <label className="text-sm font-bold text-slate-600 uppercase tracking-wider">Sheet:</label>
           <select 
             value={sheetDate}

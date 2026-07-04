@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 // Fixed employee configuration exactly matching Google Sheet
 const employeeConfig = [
@@ -199,7 +200,12 @@ function OverallReport({ token }) {
       )}
 
       <div className="flex justify-between items-center mb-4 px-4 py-3 bg-white rounded-2xl shadow-sm border border-slate-100">
-        <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-700">Overall Report</h2>
+        <div className="flex items-center gap-4">
+          <Link to="/calling-sheet" className="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl shadow-sm border border-slate-200 text-sm transition-all flex items-center gap-2">
+            ← Back to Calling Sheet
+          </Link>
+          <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-700">Overall Report</h2>
+        </div>
         <button 
           onClick={() => setShowMemberModal(true)}
           className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-2 px-4 rounded-xl shadow-md shadow-emerald-500/20 text-sm transition-all transform hover:-translate-y-0.5"
